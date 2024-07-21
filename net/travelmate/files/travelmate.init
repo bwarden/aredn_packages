@@ -81,7 +81,7 @@ scan() {
 
 	: > "${trm_scanfile}"
 	if [ -z "${radio}" ]; then
-		radio="$(ubus -S call network.wireless status 2>/dev/null | jsonfilter -q -l1 -e '@[@.up=true].interfaces[0].ifname')"
+		radio="$(ubus -S call network.wireless status 2>/dev/null | jsonfilter -q -l1 -e '@[@.up=true && @.*.*.config.mode="ap"].interfaces[0].ifname')"
 	fi
 	result="$(iwinfo "${radio}" scan 2>/dev/null |
 		awk 'BEGIN{FS="[[:space:]]"}/Address:/{var1=$NF}/ESSID:/{var2="";

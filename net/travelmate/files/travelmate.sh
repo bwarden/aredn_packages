@@ -471,6 +471,11 @@ f_getval() {
 f_setdev() {
 	local disabled radio="${1}"
 
+	country="$(uci_get "wireless" "${radio}" "country")"
+	if [ "${country}" = "HX" ]; then
+		f_log "debug" "f_setdev  ::: radio: ${radio:-"-"} skip HX interface"
+		return
+	fi
 	disabled="$(uci_get "wireless" "${radio}" "disabled")"
 	if [ "${disabled}" = "1" ]; then
 		uci_set wireless "${radio}" "disabled" "0"
